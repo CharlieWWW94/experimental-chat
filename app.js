@@ -9,6 +9,13 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+app.use("/", (req,res, next) => {
+    console.log(messageList);
+    messageList.push("Buenos Dias")
+    next();
+});
+
+
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -20,5 +27,12 @@ app.use(function(req, res, next) {
 const messageList = ["Hi", "hello", "Bonjour!"];
 
 app.get("/", (req, res) => {
+    console.log("hello")
     res.send(messageList);
 });
+
+app.post("/", (req, res) => {
+    console.log(req);
+    res.send("POST COMPLETE");
+});
+
