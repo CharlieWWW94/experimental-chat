@@ -1,21 +1,18 @@
 import express from 'express';
-import cors from 'cors';
+import bodyParser from 'body-parser';
 const app = express();
 app.listen(3000);
 
-const corsOptions = {
-    origin: "*",
-};
-
-app.use(cors(corsOptions));
-
-app.use("/", (req,res, next) => {
-    console.log(messageList);
-    messageList.push("Buenos Dias")
-    next();
-});
+//Acts as surrogate database.
+const messageList = ["Hi", "hello", "Bonjour!"];
 
 
+//body-parser allows the accessing of the post body with req.body in function below ***
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
+
+
+//This prevents cors errors in the browser.
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -24,15 +21,14 @@ app.use(function(req, res, next) {
     next();
 });
 
-const messageList = ["Hi", "hello", "Bonjour!"];
 
 app.get("/", (req, res) => {
-    console.log("hello")
     res.send(messageList);
 });
 
 app.post("/", (req, res) => {
-    console.log(req);
+    // ••• Here it is!!!
+    messageList.push(req.body.message);
     res.send("POST COMPLETE");
 });
 

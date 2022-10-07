@@ -17,8 +17,13 @@ const makePostRequest = async (message) => {
   const res =
     await fetch("http://127.0.0.1:3000", {
       method: "POST",
-      body: message,
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({message: message}),
     });
+    window.location.reload();
 };
 
 const findMessages = async () => {
@@ -26,19 +31,13 @@ const findMessages = async () => {
   updateMsgs(data);
 };
 
-// const form = document.getElementById("form")
-
 const form = document.getElementById("form");
+
 form.addEventListener("submit", event => {
     event.preventDefault();
     const message = form[0].value;
     makePostRequest(message);
 })
-
-// document.getElementById("button").addEventListener("click", event => {
-//     console.log(form);
-// })
-
 
 
 findMessages();
